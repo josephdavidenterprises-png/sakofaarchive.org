@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sankofa Archive - African and Diaspora Scholarship</title>
+  <meta name="description" content="Peer-reviewed research centering African and diaspora perspectives on urban environments, sustainability, energy, science policy, critical thinking, logic and reasoning">
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    // Icon Components
+    const Search = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+    );
+
+    const BookOpen = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+      </svg>
+    );
+
+    const Users = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    );
+
+    const Globe = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+    );
+
+    const Menu = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    );
+
+    const X = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    );
+
+    const Download = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+    );
+
+    const MessageSquare = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    );
+
+    const Share2 = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+    );
+
+    const ChevronDown = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    );
+
+    const ChevronUp = (props) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    );
+
+    const Upload = (props) => {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      );
+    };
+
+    function SankofaArchive() {
+      const [currentView, setCurrentView] = useState('home');
+      const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+      const [selectedArticle, setSelectedArticle] = useState(null);
+      const [searchQuery, setSearchQuery] = useState('');
+      const [selectedRegion, setSelectedRegion] = useState('all');
+      const [selectedTopic, setSelectedTopic] = useState('all');
+      const [expandedFaq, setExpandedFaq] = useState(null);
+
+      const articles = [
+        {
+          id: 1,
+          title: "Urban Sustainability in Lagos: Community-Led Approaches to Climate Adaptation",
+          author: "Dr. Amara Okonkwo",
+          region: "West Africa",
+          date: "2024-11-05",
+          topic: "Urban Sustainability",
+          abstract: "This paper examines community-led sustainability initiatives in Lagos, Nigeria, demonstrating how local knowledge and grassroots organizing create effective climate adaptation strategies in rapidly growing African cities.",
+          peerReviewed: true,
+          downloads: 1243,
+          discussions: 23
+        },
+        {
+          id: 2,
+          title: "Renewable Energy Transitions in the Caribbean: Policy and Practice",
+          author: "Prof. Marcus Thompson & Dr. Naledi Khumalo",
+          region: "Caribbean",
+          date: "2024-10-28",
+          topic: "Energy Policy",
+          abstract: "Exploring renewable energy policy frameworks across Caribbean nations, this research identifies barriers and opportunities for solar and wind energy adoption in island contexts.",
+          peerReviewed: true,
+          downloads: 892,
+          discussions: 17
+        },
+        {
+          id: 3,
+          title: "Environmental Justice in Brazilian Favelas: Air Quality and Health Outcomes",
+          author: "Dra. Beatriz Silva Santos",
+          region: "Brazil",
+          date: "2024-10-15",
+          topic: "Environmental Justice",
+          abstract: "An analysis of air quality disparities in São Paulo's favelas, examining how environmental racism manifests in urban planning and public health outcomes for Afro-Brazilian communities.",
+          peerReviewed: true,
+          downloads: 756,
+          discussions: 31
+        },
+        {
+          id: 4,
+          title: "Science Policy and Indigenous Knowledge: Water Management in Southern Africa",
+          author: "Dr. Kwame Adjei",
+          region: "Southern Africa",
+          date: "2024-09-30",
+          topic: "Science Policy",
+          abstract: "This research investigates how traditional water management practices can inform contemporary science policy, demonstrating the value of integrating indigenous knowledge into environmental governance.",
+          peerReviewed: true,
+          downloads: 1089,
+          discussions: 19
+        },
+        {
+          id: 5,
+          title: "Critical Thinking in Environmental Education: Decolonizing Science Curricula",
+          author: "Prof. Thabo Mbeki",
+          region: "East Africa",
+          date: "2024-09-12",
+          topic: "Education",
+          abstract: "A systematic examination of how critical thinking frameworks can decolonize environmental science education in East African universities, centering African epistemologies in sustainability discourse.",
+          peerReviewed: true,
+          downloads: 634,
+          discussions: 12
+        }
+      ];
+
+      const regions = ['All Regions', 'West Africa', 'East Africa', 'Southern Africa', 'North Africa', 'Caribbean', 'North America', 'Europe', 'Brazil'];
+      const topics = ['All Topics', 'Urban Sustainability', 'Energy Policy', 'Environmental Justice', 'Science Policy', 'Education', 'Climate Change'];
+
+      const faqs = [
+        {
+          id: 1,
+          question: "What is the importance of education to society, culture, welfare and the economics of a nation?",
+          answer: "Education serves as the foundation for societal development and human flourishing across multiple dimensions. Societally, education creates informed citizens capable of participating in democratic processes and collective decision-making. Culturally, it transmits knowledge, values, and traditions across generations while fostering critical engagement with inherited wisdom. For welfare, education is directly correlated with improved health outcomes, reduced poverty, and enhanced quality of life—educated populations make more informed decisions about nutrition, healthcare, and family planning. Economically, education drives innovation, productivity, and economic growth; it develops human capital that fuels industries, creates employment opportunities, and enables nations to compete in global markets. Beyond these instrumental values, education cultivates human dignity, agency, and the capacity for self-determination. For African and diaspora communities specifically, education has been both a tool of colonial control and a pathway to liberation—making critical, culturally-grounded education essential for decolonization and self-determination."
+        },
+        {
+          id: 2,
+          question: "What is scholarship and why is it important?",
+          answer: "Scholarship is the systematic pursuit, creation, and dissemination of knowledge through rigorous research, critical analysis, and intellectual discourse. It involves not merely consuming existing knowledge but actively contributing to collective understanding through original research, theoretical development, and critical examination of established ideas. Scholarship is important because it advances human knowledge, challenges assumptions, and provides evidence-based foundations for decision-making in all spheres of life. It creates accountability structures where claims must be supported by evidence and subjected to peer scrutiny. For African and diaspora communities, scholarship is particularly vital as it enables communities to document their own histories, validate indigenous knowledge systems, challenge racist and colonial narratives, and contribute perspectives often marginalized in mainstream academic discourse. Scholarship empowers communities to be knowledge producers rather than merely knowledge consumers, asserting epistemic sovereignty and self-definition."
+        },
+        {
+          id: 3,
+          question: "What is critical thinking and why do scholars need to use it?",
+          answer: "Critical thinking is the disciplined practice of analyzing, evaluating, and synthesizing information through careful reasoning rather than accepting claims at face value. It involves questioning assumptions, examining evidence, identifying biases, recognizing logical fallacies, and considering alternative perspectives before forming judgments. Scholars need critical thinking because it is the foundation of intellectual rigor and academic integrity. Without it, scholarship devolves into mere opinion, propaganda, or the uncritical repetition of received wisdom. Critical thinking enables scholars to distinguish between strong and weak arguments, identify gaps in reasoning, recognize when evidence truly supports conclusions, and avoid being misled by rhetorical manipulation or cognitive biases. For African and diaspora scholars specifically, critical thinking is essential for deconstructing colonial knowledge systems, identifying Eurocentric assumptions embedded in methodologies, and developing analytical frameworks grounded in African epistemologies. It enables the interrogation of power dynamics inherent in knowledge production and the development of scholarship that serves community needs rather than perpetuating intellectual colonialism."
+        },
+        {
+          id: 4,
+          question: "What is epistemology and why is it important?",
+          answer: "Epistemology is the branch of philosophy concerned with the nature, sources, and limits of knowledge. It asks fundamental questions: What is knowledge? How do we acquire knowledge? What makes beliefs justified or warranted? What distinguishes knowledge from mere opinion? How do we evaluate knowledge claims? Epistemology is important because it provides the philosophical foundation for all scholarly inquiry—our epistemological commitments shape what we consider valid evidence, legitimate methodologies, and reliable sources of knowledge. For African and diaspora scholarship, epistemology is particularly crucial because Western academic traditions have historically privileged certain ways of knowing (empiricism, rationalism, individual cognition) while dismissing others (oral traditions, collective knowledge, spiritual insight, embodied knowing). Engaging with epistemology allows scholars to critically examine whose knowledge counts, why certain knowledge systems have been marginalized, and how to develop inclusive frameworks that honor diverse ways of knowing. It enables the decolonization of knowledge by challenging the assumed universality of Western epistemological frameworks and asserting the validity of African and indigenous epistemologies such as Ubuntu philosophy, oral traditions, and relational ways of knowing."
+        },
+        {
+          id: 5,
+          question: "What is logic?",
+          answer: "Logic is the systematic study of valid reasoning and argumentation. It provides formal rules and structures for evaluating whether conclusions follow necessarily from premises, identifying fallacious reasoning, and constructing sound arguments. Logic includes both formal logic (using symbolic systems to represent arguments structurally) and informal logic (analyzing arguments in natural language, identifying fallacies, and assessing real-world reasoning). At its core, logic helps distinguish between valid and invalid inferences, ensuring that our reasoning processes lead to reliable conclusions. However, it's important to recognize that Western formal logic, while valuable, represents only one approach to systematic reasoning. African philosophical traditions contain rich logical frameworks embedded in proverbs, oral traditions, and indigenous knowledge systems. For example, Akan and Yoruba philosophical traditions demonstrate sophisticated reasoning structures that may not always conform to Aristotelian logic but are nonetheless rigorous and systematic. Understanding logic broadly—including non-Western logical systems—is essential for scholars engaging across cultural contexts and for developing inclusive frameworks for reasoning that honor diverse intellectual traditions."
+        },
+        {
+          id: 6,
+          question: "What is dialecticism and why is it important in scholarship?",
+          answer: "Dialecticism is a method of reasoning and inquiry that proceeds through dialogue, contradiction, and synthesis. Rather than viewing knowledge as static or ideas as isolated, dialectical thinking recognizes that understanding emerges through the dynamic interplay of opposing viewpoints, tensions, and contradictions. In classical formulations, dialectic involves thesis (a position), antithesis (a contrary position), and synthesis (a higher understanding that transcends both). More broadly, dialectical thinking embraces complexity, context, and change rather than seeking simple, universal, or unchanging truths. Dialecticism is important in scholarship because it prevents dogmatism and encourages intellectual humility—recognizing that current understanding may be partial, that alternative perspectives may contain truth, and that knowledge evolves through ongoing dialogue. For African and diaspora scholarship, dialecticism is particularly valuable as it aligns with many African philosophical traditions that emphasize dialogue, community discourse, and the relational nature of knowledge. It provides a framework for holding multiple perspectives simultaneously, navigating tensions between tradition and modernity, and synthesizing indigenous and Western knowledge systems without demanding the erasure of either. Dialectical scholarship resists reductionism and honors the complexity of lived experience."
+        },
+        {
+          id: 7,
+          question: "What is reasoning and what are the various forms of it?",
+          answer: "Reasoning is the cognitive process of drawing conclusions, making inferences, and forming judgments based on available information, evidence, and principles. It is how we move from what we know to what we can conclude or predict. The main forms of reasoning include: **Deductive reasoning**, which moves from general principles to specific conclusions (if premises are true, conclusion must be true); **Inductive reasoning**, which moves from specific observations to general conclusions (providing probable rather than certain conclusions); **Abductive reasoning**, which infers the most likely explanation for observations (reasoning to the best explanation); **Analogical reasoning**, which draws inferences based on similarities between cases; **Causal reasoning**, which identifies cause-and-effect relationships; and **Practical reasoning**, which determines what actions to take given goals and circumstances. Beyond these, various cultural traditions offer additional reasoning frameworks. For instance, African philosophical traditions often emphasize **relational reasoning** (understanding phenomena through relationships and context), **proverbial reasoning** (using traditional wisdom encoded in proverbs), and **communal reasoning** (knowledge validated through community discourse). Understanding diverse forms of reasoning enriches scholarship by providing multiple analytical tools and honoring the intellectual contributions of different cultural traditions. Effective scholars employ multiple forms of reasoning depending on context, recognizing that different questions and problems may call for different reasoning approaches."
+        }
+      ];
+
+      const filteredArticles = articles.filter(article => {
+        const matchesSearch = searchQuery === '' || 
+          article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          article.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          article.abstract.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesRegion = selectedRegion === 'all' || article.region === selectedRegion;
+        const matchesTopic = selectedTopic === 'all' || article.topic === selectedTopic;
+        return matchesSearch && matchesRegion && matchesTopic;
+      });
+
+      const HomePage = () => (
+        <div className="space-y-12">
+          <div className="bg-gradient-to-r from-amber-600 to-red-700 text-white rounded-lg p-8 md:p-12">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">Sankofa Archive</h1>
+            <p className="text-lg md:text-xl mb-6 opacity-90">
+              Peer-reviewed research centering African and diaspora perspectives on urban environments, sustainability, energy, science policy, critical thinking, logic and reasoning
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <button 
+                onClick={() => setCurrentView('browse')}
+                className="bg-white text-amber-700 px-6 py-3 rounded-lg font-semibold hover:bg-amber-50 transition"
+              >
+                Browse Articles
+              </button>
+              <button 
+                onClick={() => setCurrentView('submit')}
+                className="bg-amber-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-900 transition"
+              >
+                Submit Research
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white border-2 border-amber-200 rounded-lg p-6 text-center">
+              <BookOpen className="w-12 h-12 mx-auto mb-3 text-amber-600" />
+              <div className="text-3xl font-bold text-gray-800">248</div>
+              <div className="text-gray-600">Published Articles</div>
+            </div>
+            <div className="bg-white border-2 border-red-200 rounded-lg p-6 text-center">
+              <Users className="w-12 h-12 mx-auto mb-3 text-red-600" />
+              <div className="text-3xl font-bold text-gray-800">156</div>
+              <div className="text-gray-600">Contributing Authors</div>
+            </div>
+            <div className="bg-white border-2 border-green-200 rounded-lg p-6 text-center">
+              <Globe className="w-12 h-12 mx-auto mb-3 text-green-600" />
+              <div className="text-3xl font-bold text-gray-800">32</div>
+              <div className="text-gray-600">Countries Represented</div>
+            </div>
+            <div className="bg-white border-2 border-blue-200 rounded-lg p-6 text-center">
+              <MessageSquare className="w-12 h-12 mx-auto mb-3 text-blue-600" />
+              <div className="text-3xl font-bold text-gray-800">1.2k</div>
+              <div className="text-gray-600">Community Discussions</div>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">Featured Research</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {articles.slice(0, 2).map(article => (
+                <div key={article.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer"
+                     onClick={() => { setSelectedArticle(article); setCurrentView('article'); }}>
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">{article.region}</span>
+                    <span className="text-xs text-gray-500">{article.date}</span>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800">{article.title}</h3>
+                  <p className="text-sm text-gray-600 mb-3">{article.author}</p>
+                  <p className="text-sm text-gray-700 line-clamp-3">{article.abstract}</p>
+                  <div className="mt-4 flex gap-4 text-xs text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Download className="w-4 h-4" /> {article.downloads}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MessageSquare className="w-4 h-4" /> {article.discussions}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-lg p-8">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800">Our Mission</h2>
+            <p className="text-gray-700 mb-4">
+              We are building a digital archive that centers African and diaspora voices in discussions on urban environments, sustainability, energy, science policy, critical thinking, logic, and reasoning. Our peer-reviewed platform challenges Eurocentric epistemological assumption and creates a space for diverse ways of knowing and thinking about issues that impact Africa and the African diaspora.
+            </p>
+            <p className="text-gray-700">
+              By connecting scholars, practitioners, and communities across continents, we foster dialogue that bridges 
+              traditional academic discourse with lived experiences and indigenous knowledge systems.
+            </p>
+          </div>
+        </div>
+      );
+
+      const BrowsePage = () => (
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold text-gray-800">Browse Research</h1>
+          
+          <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search by title, author, or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Region</label>
+                <select
+                  value={selectedRegion}
+                  onChange={(e) => setSelectedRegion(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                >
+                  {regions.map(region => (
+                    <option key={region} value={region === 'All Regions' ? 'all' : region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Topic</label>
+                <select
+                  value={selectedTopic}
+                  onChange={(e) => setSelectedTopic(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                >
+                  {topics.map(topic => (
+                    <option key={topic} value={topic === 'All Topics' ? 'all' : topic}>
+                      {topic}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="text-sm text-gray-600">
+              Showing {filteredArticles.length} of {articles.length} articles
+            </div>
+            
+            {filteredArticles.map(article => (
+              <div key={article.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition cursor-pointer"
+                   onClick={() => { setSelectedArticle(article); setCurrentView('article'); }}>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex gap-2">
+                    <span className="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">{article.region}</span>
+                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{article.topic}</span>
+                  </div>
+                  <span className="text-xs text-gray-500">{article.date}</span>
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 hover:text-amber-600">{article.title}</h3>
+                <p className="text-sm text-gray-600 mb-3">{article.author}</p>
+                <p className="text-gray-700 mb-4">{article.abstract}</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-4 text-sm text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Download className="w-4 h-4" /> {article.downloads} downloads
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MessageSquare className="w-4 h-4" /> {article.discussions} discussions
+                    </span>
+                  </div>
+                  <button className="text-amber-600 hover:text-amber-700 font-medium text-sm">
+                    Read More →
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+      const ArticlePage = () => {
+        if (!selectedArticle) return null;
+        
+        return (
+          <div className="space-y-6">
+            <button 
+              onClick={() => setCurrentView('browse')}
+              className="text-amber-600 hover:text-amber-700 font-medium flex items-center gap-2"
+            >
+              ← Back to Browse
+            </button>
+            
+            <div className="bg-white rounded-lg border border-gray-200 p-8">
+              <div className="flex flex-wrap gap-2 mb-4">
+                <span className="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded">{selectedArticle.region}</span>
+                <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded">{selectedArticle.topic}</span>
+                <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded">Peer Reviewed</span>
+              </div>
+              
+              <h1 className="text-3xl font-bold mb-4 text-gray-800">{selectedArticle.title}</h1>
+              
+              <div className="mb-6">
+                <p className="text-lg text-gray-700">{selectedArticle.author}</p>
+                <p className="text-sm text-gray-500">Published: {selectedArticle.date}</p>
+              </div>
+              
+              <div className="border-t border-b border-gray-200 py-4 mb-6">
+                <h2 className="font-semibold mb-2 text-gray-800">Abstract</h2>
+                <p className="text-gray-700">{selectedArticle.abstract}</p>
+              </div>
+              
+              <div className="flex flex-wrap gap-3 mb-8">
+                <button className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+                  <Download className="w-4 h-4" /> Download PDF
+                </button>
+                <button className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                  <Share2 className="w-4 h-4" /> Share
+                </button>
+                <button className="flex items-center gap-2 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition">
+                  Cite This Work
+                </button>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Community Discussion ({selectedArticle.discussions})</h2>
+                <div className="space-y-4">
+                  <div className="bg-white p-4 rounded border border-gray-200">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-amber-200 rounded-full flex items-center justify-center font-semibold text-amber-800">
+                        KM
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-800">Kofi Mensah</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          This framework resonates deeply with my research on urban sustainability. Would love to see more comparative analysis with other African cities.
+                        </p>
+                        <p className="text-xs text-gray-500 mt-2">2 days ago</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <button className="w-full text-center py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-amber-500 hover:text-amber-600 transition">
+                    Join the Discussion
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const SubmitPage = () => (
+        <div className="space-y-6">
+          <h1 className="text-3xl font-bold text-gray-800">Submit Your Research</h1>
+          
+          <div className="bg-white rounded-lg border border-gray-200 p-8">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-3 text-gray-800">Submission Guidelines</h2>
+              <ul className="list-disc list-inside space-y-2 text-gray-700">
+                <li>All submissions undergo double-blind peer review</li>
+                <li>Research must engage with urban environments, sustainability, energy, science policy, critical thinking, logic, or epistemology</li>
+                <li>We prioritize work centering African and diaspora perspectives</li>
+                <li>Manuscripts should be 5,000-12,000 words</li>
+                <li>Multiple language submissions welcome (English, French, Portuguese, Arabic)</li>
+              </ul>
+            </div>
+            
+            <form className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Article Title *</label>
+                <input
+                  type="text"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  placeholder="Enter your article title"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Author Name(s) *</label>
+                  <input
+                    type="text"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="Name(s)"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                  <input
+                    type="email"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Primary Region *</label>
+                  <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                    <option>Select region...</option>
+                    {regions.filter(r => r !== 'All Regions').map(region => (
+                      <option key={region}>{region}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Topic Area *</label>
+                  <select className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                    <option>Select topic...</option>
+                    {topics.filter(t => t !== 'All Topics').map(topic => (
+                      <option key={topic}>{topic}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Abstract (250-500 words) *</label>
+                <textarea
+                  rows={6}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  placeholder="Enter your abstract..."
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Upload Manuscript (PDF or DOCX) *</label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-amber-500 transition cursor-pointer">
+                  <Upload className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                  <p className="text-gray-600">Click to upload or drag and drop</p>
+                  <p className="text-sm text-gray-500 mt-1">PDF or DOCX (max 25MB)</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <input type="checkbox" className="mt-1" id="terms" />
+                <label htmlFor="terms" className="text-sm text-gray-700">
+                  I confirm this work is original, has not been published elsewhere, and I have read the submission guidelines
+                </label>
+              </div>
+              
+              <button 
+                type="submit"
+                className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition"
+              >
+                Submit for Review
+              </button>
+            </form>
+          </div>
+        </div>
+      );
+
+      const FaqPage = () => {
+        return (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-r from-amber-600 to-red-700 text-white rounded-lg p-8">
+              <h1 className="text-3xl md:text-4xl font-bold mb-3">Frequently Asked Questions</h1>
+              <p className="text-lg opacity-90">
+                Foundational concepts in critical thinking, scholarship, and epistemology
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <p className="text-gray-700 mb-4">
+                These questions address core concepts that inform our platform's mission and the scholarly work we archive. 
+                They are designed to support both newcomers to academic inquiry and experienced scholars seeking to deepen 
+                their understanding of fundamental concepts in critical thinking and epistemology.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq) => (
+                <div key={faq.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                  <button
+                    onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
+                    className="w-full px-6 py-5 text-left flex items-start justify-between hover:bg-gray-50 transition"
+                  >
+                    <div className="flex-1 pr-4">
+                      <div className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-semibold text-sm">
+                          {faq.id}
+                        </span>
+                        <h3 className="font-semibold text-gray-800 text-lg leading-relaxed">
+                          {faq.question}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0 ml-2">
+                      {expandedFaq === faq.id ? (
+                        <ChevronUp className="w-6 h-6 text-amber-600" />
+                      ) : (
+                        <ChevronDown className="w-6 h-6 text-gray-400" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {expandedFaq === faq.id && (
+                    <div className="px-6 pb-6 pt-2">
+                      <div className="pl-11 pr-4">
+                        <div className="border-l-4 border-amber-200 pl-4">
+                          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-blue-600" />
+                Have More Questions?
+              </h3>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                If you have additional questions about our platform, submission process, or the concepts we engage with, 
+                we welcome your inquiry. Contact us at: <span className="font-semibold">info@sankofaarchive.org</span>
+              </p>
+              <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-medium">
+                Contact Us
+              </button>
+            </div>
+          </div>
+        );
+      };
+
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentView('home')}>
+                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-red-600 rounded-lg flex items-center justify-center">
+                    <BookOpen className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-bold text-gray-800">Sankofa Archive</h1>
+                    <p className="text-xs text-gray-600">sankofaarchive.org</p>
+                  </div>
+                </div>
+                
+                <nav className="hidden md:flex gap-6">
+                  <button onClick={() => setCurrentView('home')} className="text-gray-700 hover:text-amber-600 font-medium">Home</button>
+                  <button onClick={() => setCurrentView('browse')} className="text-gray-700 hover:text-amber-600 font-medium">Browse</button>
+                  <button onClick={() => setCurrentView('submit')} className="text-gray-700 hover:text-amber-600 font-medium">Submit</button>
+                  <button onClick={() => setCurrentView('faq')} className="text-gray-700 hover:text-amber-600 font-medium">FAQ</button>
+                  <button className="text-gray-700 hover:text-amber-600 font-medium">About</button>
+                </nav>
+                
+                <button 
+                  className="md:hidden"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                  {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
+              </div>
+            </div>
+            
+            {mobileMenuOpen && (
+              <div className="md:hidden border-t border-gray-200 bg-white">
+                <nav className="flex flex-col p-4 space-y-3">
+                  <button onClick={() => { setCurrentView('home'); setMobileMenuOpen(false); }} className="text-left text-gray-700 hover:text-amber-600 font-medium py-2">Home</button>
+                  <button onClick={() => { setCurrentView('browse'); setMobileMenuOpen(false); }} className="text-left text-gray-700 hover:text-amber-600 font-medium py-2">Browse</button>
+                  <button onClick={() => { setCurrentView('submit'); setMobileMenuOpen(false); }} className="text-left text-gray-700 hover:text-amber-600 font-medium py-2">Submit</button>
+                  <button onClick={() => { setCurrentView('faq'); setMobileMenuOpen(false); }} className="text-left text-gray-700 hover:text-amber-600 font-medium py-2">FAQ</button>
+                  <button className="text-left text-gray-700 hover:text-amber-600 font-medium py-2">About</button>
+                </nav>
+              </div>
+            )}
+          </header>
+
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            {currentView === 'home' && <HomePage />}
+            {currentView === 'browse' && <BrowsePage />}
+            {currentView === 'article' && <ArticlePage />}
+            {currentView === 'submit' && <SubmitPage />}
+            {currentView === 'faq' && <FaqPage />}
+          </main>
+
+          <footer className="bg-gray-800 text-white mt-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                  <h3 className="font-bold mb-4">About Sankofa Archive</h3>
+                  <p className="text-sm text-gray-300">
+                    A peer reviewed platform centering African and diaspora perspectives on urban environmental/sustainability issues, energy use, science policy, critical thinking and epistemology.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold mb-4">For Authors</h3>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li><a href="#" className="hover:text-amber-400">Submission Guidelines</a></li>
+                    <li><a href="#" className="hover:text-amber-400">Peer Review Process</a></li>
+                    <li><a href="#" className="hover:text-amber-400">Author Resources</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-bold mb-4">Resources</h3>
+                  <ul className="space-y-2 text-sm text-gray-300">
+                    <li><a href="#" className="hover:text-amber-400">Editorial Board</a></li>
+                    <li><a href="#" className="hover:text-amber-400">Advisory Council</a></li>
+                    <li><a href="#" className="hover:text-amber-400">Contact Us</a></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-bold mb-4">Connect</h3>
+                  <p className="text-sm text-gray-300 mb-3">
+                    Join our community of scholars and thinkers.
+                  </p>
+                  <div className="flex gap-3">
+                    <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-amber-600 transition cursor-pointer"></div>
+                    <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-amber-600 transition cursor-pointer"></div>
+                    <div className="w-8 h-8 bg-gray-700 rounded-full hover:bg-amber-600 transition cursor-pointer"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>© 2024 Sankofa Archive. Open access platform supporting scholarly exchange.</p>
+                <p className="mt-1">sankofaarchive.org</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<SankofaArchive />, document.getElementById('root'));
+  </script>
+</body>
+</html>
